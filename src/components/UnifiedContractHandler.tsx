@@ -62,6 +62,19 @@ export interface ContractInteractionRequest {
   gasPrice?: number;
 }
 
+interface ContractInteractionHistory {
+  type: 'view' | 'call';
+  contractAddress: string;
+  methodName: string;
+  params: string[];
+  timestamp: number;
+  success: boolean;
+  walletAddress: string;
+  result?: any;
+  error?: string;
+  txHash?: string;
+}
+
 interface UnifiedContractHandlerProps {
   request: ContractInteractionRequest;
   wallets: Wallet[];
@@ -385,7 +398,7 @@ export function UnifiedContractHandler({
       );
 
       // Store contract interaction in history
-      const contractInteraction = {
+      const contractInteraction: ContractInteractionHistory = {
         type: request.method.type,
         contractAddress: request.contractAddress,
         methodName: request.method.name,
@@ -485,7 +498,7 @@ export function UnifiedContractHandler({
     }
   };
 
-  const saveContractInteraction = (interaction: any) => {
+  const saveContractInteraction = (interaction: ContractInteractionHistory) => {
     try {
       const existingHistory = JSON.parse(localStorage.getItem('contractHistory') || '[]');
       const updatedHistory = [interaction, ...existingHistory].slice(0, 100); // Keep last 100 interactions
