@@ -53,6 +53,9 @@ export interface ContractInteractionRequest {
   contractAddress: string;
   method: ContractMethod;
   appName?: string;
+  result?: any;
+  txHash?: string;
+  error?: string;
   appIcon?: string;
   value?: string; // For payable methods
   gasLimit?: number;
